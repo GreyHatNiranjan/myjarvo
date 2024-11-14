@@ -1,9 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/api/mysql/route": "app/api/mysql/route.js",
-  "/contact/page": "app/contact/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/visitor/route": "app/api/visitor/route.js"
-}
