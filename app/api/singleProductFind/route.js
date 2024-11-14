@@ -21,17 +21,21 @@ const pool = mysql.createPool({
     connectTimeout: 20000
 });
 
+// Handle GET request
 export async function GET(request) {
     try {
         // Parse URL and extract the search params
         const url = new URL(request.url);
         const id = url.searchParams.get("id");
-        
-// console.log(typeof id);
 
         // Validate id to prevent SQL injection and check if id is a positive integer
         if (!id || isNaN(id) || parseInt(id) <= 0) {
-            return new NextResponse(JSON.stringify({ error: 'Invalid or missing ID parameter' }), { status: 400 });
+            return new NextResponse(JSON.stringify({ error: 'Invalid or missing ID parameter' }), {
+                status: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
         }
 
         // Use parameterized query to safely retrieve data
@@ -42,19 +46,40 @@ export async function GET(request) {
         );
 
         if (rows.length === 0) {
-            return new NextResponse(JSON.stringify({ error: 'Product not found' }));
+            return new NextResponse(JSON.stringify({ error: 'Product not found' }), {
+                status: 404,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
         }
-        // console.log(rows);
-        
+
         return new NextResponse(JSON.stringify(rows), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*', // adjust as needed
+                'Access-Control-Allow-Origin': '*', // Allow all origins, adjust as needed
             },
         });
     } catch (err) {
         console.error('SingleProductFind MySQL Query Error:', err);
-        return new NextResponse(JSON.stringify({ error: 'Internal Server Error', details: err.message }), { status: 500 });
+        return new NextResponse(JSON.stringify({ error: 'Internal Server Error', details: err.message }), {
+            status: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+        });
     }
+}
+
+// Handle OPTIONS request (for CORS preflight)
+export async function OPTIONS() {
+    return new NextResponse(null, {
+        status: 204,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+        },
+    });
 }

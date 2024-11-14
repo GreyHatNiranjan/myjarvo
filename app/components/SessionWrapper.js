@@ -6,7 +6,8 @@ const SessionWrapper = ({children}) => {
   const getIP = async () => {
     try {
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/visitor`);
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/visitor`);
+      const response = await fetch(`/api/visitor`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

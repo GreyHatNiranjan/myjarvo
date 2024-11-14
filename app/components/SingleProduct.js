@@ -28,7 +28,8 @@ const SingleProduct = ({ id }) => {
     const [loading, setLoading] = useState(false)
     const findProduct = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/singleProductFind/?id=${id}`);
+            const response = await fetch(`/api/singleProductFind/?id=${id}`);
+            // const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/singleProductFind/?id=${id}`);
             console.log(process.env.NEXT_PUBLIC_URL)
             if (!response.ok) {
                 throw new Error('Network response was not ok');
